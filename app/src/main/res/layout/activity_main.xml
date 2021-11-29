@@ -204,9 +204,6 @@
             android:src="@drawable/hits"
             android:scaleType="centerInside"
             />
-
     </LinearLayout>
-
-
 </LinearLayout>
 

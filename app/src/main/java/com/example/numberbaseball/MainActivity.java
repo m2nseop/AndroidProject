@@ -2,9 +2,9 @@ package com.example.numberbaseball;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < numButton.length; i++) {
             numButton[i] = findViewById(R.id.num_button_0 + i);
         }
-        
+
     }
 
     public int[] getComNumbers() {
