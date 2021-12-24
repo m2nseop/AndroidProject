@@ -31,8 +31,8 @@
         android:layout_height="0dp"
         android:layout_weight="16"
         android:orientation="horizontal"
-        android:weightSum="100"
-        android:layout_margin="10dp"
+        android:weightSum="95"
+        android:layout_margin="5dp"
         android:gravity="center">
 
         <TextView
@@ -57,17 +57,26 @@
             android:background="@drawable/ball"
             android:layout_margin="5dp"
             android:id="@+id/input_text_view_1"/>
+
         <TextView
+            android:id="@+id/input_text_view_2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="25"
-            android:textSize="65sp"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:background="@drawable/ball"
             android:layout_margin="5dp"
-            android:id="@+id/input_text_view_2"/>
+            android:layout_weight="25"
+            android:background="@drawable/ball"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="65sp"
+            android:textStyle="bold"/>
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="33dp"
+            android:layout_weight="9"
+            android:background="#FF4F2A"
+            android:src="@drawable/ic_baseline_reset_24"
+            android:id="@+id/reset_button"/>
+
     </LinearLayout>
 
     <LinearLayout

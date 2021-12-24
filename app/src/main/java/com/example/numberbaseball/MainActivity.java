@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +17,17 @@ public class MainActivity extends AppCompatActivity {
 
     int[] comNumbers = new int[3]; // 3개의 랜덤한 숫자(=정답) 저장용 배열
     int inputTextCount = 0; // 버튼을 눌렸을때 누른 버튼 개수 카운트 용, 숫자버튼을 3개 누른후에 더 이상 누르지 못하게 한다.
+    int hitCount = 1; // 몇번째 시도(정답확인)인지
 
     TextView[] inputTextView = new TextView[3]; // 내가 선택한 숫자 저장, 야구공 출력용
     Button[] numButton = new Button[10]; // 내가 누른 숫자 버튼
 
-    ImageButton backSpaceButton;
-    ImageButton hitButton;
+    ImageButton backSpaceButton; // 지우기 버튼
+    ImageButton hitButton; // 정답입력 버튼
+    ImageButton resetButton; // 게임 초기화 버
+
+    TextView resultTextView; // 정답입력버튼 눌렀을때 나온 결과 출력용 TextView
+    ScrollView scrollView; // 결과창의 기록이 넘쳤을때 스크롤을 올려서 이전 기록을 보기위한 ScrollView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         backSpaceButton = findViewById(R.id.backspace_button);
         hitButton = findViewById(R.id.hit_button);
+        resultTextView = findViewById(R.id.result_text_view);
+        scrollView = findViewById(R.id.scroll_view);
+        resetButton = findViewById(R.id.reset_button);
 
         // 숫자버튼을 클릭했을때 야구공모양에 해당 숫자 출력되게 하기 + 중복,개수초과 방지
         for(Button getNumButton : numButton){ // getNumButton 으로 numButton 배열을 순차적으로 받고
@@ -97,6 +106,26 @@ public class MainActivity extends AppCompatActivity {
                     countCheck = getCountCheck(comNumbers, userNumbers);
                     Log.e("hitButton", "countCheck = S : " + countCheck[0] + " B : " + countCheck[1]); // 확인용 로그
 
+                    String resultCount;
+                    if (countCheck[0] == 3){ // 정답, 아웃
+                        resultCount = hitCount + "  [ " + userNumbers[0] + " " + userNumbers[1] + " " + userNumbers[2] + "] 아웃 - 축하합니다!!";
+
+                    } else { // 정답이 아닐경우 결과를 출력
+                        resultCount = hitCount + "  [ " + userNumbers[0] + " " + userNumbers[1] + " " + userNumbers[2] + "]  S : " + countCheck[0] + " B : " + countCheck[1];
+                    }
+                    if (hitCount == 1) { // 처음으로 입력했을때
+                        resultTextView.setText(resultCount + "\n");
+                    } else { // 그다음엔 append 로 내용을 이어나간다.
+                        resultTextView.append(resultCount + "\n");
+                    }
+                    if (countCheck[0] == 3){ //
+                        hitCount = 1;
+                        comNumbers = getComNumbers();
+                    }
+                    else { hitCount++;}
+
+                    scrollView.fullScroll(View.FOCUS_DOWN); // FOCUS_DOWN 으로 설정하므로서 결과창이 밑으로 게속 내려간다.
+
                     inputTextCount = 0; // 선택한 숫자 카운트 초기
                     for (TextView textView : inputTextView) {
                         textView.setText(""); // 선택한 숫자 전부 텍스트 지움
@@ -108,16 +137,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 리셋버튼
+       resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resultTextView.setText("");
+                Toast.makeText(getApplicationContext(), "게임이 다시 시작되었습니다.", Toast.LENGTH_SHORT).show();
+                hitCount = 1;
+                comNumbers = getComNumbers();
+                inputTextCount = 0; // 선택한 숫자 카운트 초기
+                for (TextView textView : inputTextView) {
+                    textView.setText(""); // 선택한 숫자 전부 텍스트 지움
+                }
+                for (Button button : numButton){
+                    button.setEnabled(true); // 선택한 숫자 버튼 전부 활성화
+                }
+            }
+        });
+
     }
     // 정답 체크용 메서드, comNumbers 는 정답 배열, userNumbers 는 내가 누른 숫자 배열
     private int[] getCountCheck(int[] comNumbers, int[] userNumbers) {
         int[] setCount = new int[2]; // 스트라잌과 볼을 저장할 2칸짜리 int 형 배열
         for (int i = 0; i < comNumbers.length; i++) {
             for (int j = 0; j < userNumbers.length; j++) {
-                if ((comNumbers[i] == userNumbers[j]) && (i == j)){ // 숫자와 자리가 같으면
-                    setCount[0]++; // 스트롸잌
-                }else if((comNumbers[i] == userNumbers[j]) && (i != j)) { // 숫자만 같고 자리가 다르면
-                    setCount[1]++; // 볼
+                if (comNumbers[i] == userNumbers[j]) {
+                    if (i==j) {
+                        setCount[0]++; // 스트롸잌
+                    }
+                    else {
+                        setCount[1]++; // 볼
+                    }
                 }
             }
         }
