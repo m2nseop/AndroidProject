@@ -122,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                         hitCount = 1;
                         comNumbers = getComNumbers();
                     }
-                    else { hitCount++;}
 
                     scrollView.fullScroll(View.FOCUS_DOWN); // FOCUS_DOWN 으로 설정하므로서 결과창이 밑으로 게속 내려간다.
 
