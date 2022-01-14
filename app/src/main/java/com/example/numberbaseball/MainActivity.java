@@ -118,10 +118,15 @@ public class MainActivity extends AppCompatActivity {
                     } else { // 그다음엔 append 로 내용을 이어나간다.
                         resultTextView.append(resultCount + "\n");
                     }
+<<<<<<< HEAD
                     if (countCheck[0] == 3){ //
                         hitCount = 1;
                         comNumbers = getComNumbers();
                     }
+=======
+                    if (countCheck[0] != 3)
+                        hitCount++;
+>>>>>>> 1477e41 (fix: remove getComNumbers method in hitbutton)
 
                     scrollView.fullScroll(View.FOCUS_DOWN); // FOCUS_DOWN 으로 설정하므로서 결과창이 밑으로 게속 내려간다.
 
